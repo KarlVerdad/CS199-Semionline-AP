@@ -1,0 +1,4 @@
+v0.01: Semi-online algorithm Iteration 1
++ Added semionline_operations.py
+	> Contains prototype for performing the semi-online AP on a single data file
+	> Still has a lot of bugs
