@@ -1,5 +1,4 @@
 Action items
--> Fix delta = 1
 -> Fix Choice randomness
 -> Plot the distribution of edge weights (Beasley)
 -> Test the algorithm on small data (10 items) with an optimal answer

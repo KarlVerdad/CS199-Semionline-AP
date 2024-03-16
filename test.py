@@ -109,14 +109,14 @@ def create_graph_from_text(file_name):
 # Input: original array 'A', matching 'M'
 # Output: sum of matching 'sum', zeros of A 'zeros'
 def compute_sum_from_matching(A, M):
-	print(A)
-	print(M)
+	# print(A)
+	# print(M)
 	n = A.shape[0]
 	zeros = np.zeros([A.shape[0], A.shape[1]])
 	sum = 0
 
 	for i in range(n):
-		print(i, "->", A[i][M[i] - n])
+		# print(i, "->", A[i][M[i] - n])
 		sum = sum + A[i][M[i] - n]		# A contains node i's edge weights; M contains matched node offset by n
 		zeros[i][M[i] - n] = 1			# Sets node i's matched node to 1
 
@@ -130,7 +130,28 @@ def sample_assign100(fName):
 	return sumVal, A, M, G
 
 sum, A, M, G = sample_assign100("test/assign200.txt")
-print(type(sum[0]))
+
+### Check out A and G contents ###
+print(A[0])
+# print(A[1])
+# print(A[2])
+
+
+n = A.shape[0]
+
+# Prints the edges of the first node of the LHS
+LHS_edges = [G.edges[0, i + 200]["weight"] for i in range(n)]
+print("==LHS==")
+print(LHS_edges)
+
+# RHS_edges = [G.edges[]]
+
+
+######
+
+
+# print(type(sum[0]))
+
 
 # print(sum)
 # print(len(sum[1]))

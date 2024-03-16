@@ -155,7 +155,7 @@ for i in range(2):
 	delta = DELTA_OPTIONS[i]
 	print("Delta: ", delta)
 
-	ALG, OPT = semionline("test/assign300.txt", delta)
+	ALG, OPT = semionline("test/assign200.txt", delta)
 
 	print(ALG, "/", OPT)
 	print("c: ", ALG / OPT, "\n")

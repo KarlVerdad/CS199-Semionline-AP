@@ -1,4 +1,16 @@
-v0.01: Semi-online algorithm Iteration 1
-+ Added semionline_operations.py
-	> Contains prototype for performing the semi-online AP on a single data file
-	> Still has a lot of bugs
+v0.02: GraphAP class
++ Created GraphAP class 
+	> This class will hold the graph, and will contain functions to facilitate
+	semi-online matching
+	> Variables
+		- n -> Dimensions of the bipartite graph
+		- graph -> NetworkX graph to hold the nodes, edges, and edge weights
+		- sorted_edges -> array of edge weights sorted in increasing cost
+	> Functions
+		- is_matched_completely() -> Checks if every node has been matched
+		- generate_lookup_table() -> Creates a lookup based on delta
+		- get_matching_sum() -> Gets sum of a matching on this graph
+
+TODO Updates
++ Completed the task of fixing the delta = 1 problem
+	> The error was due to Karp being attempted on an empty graph
