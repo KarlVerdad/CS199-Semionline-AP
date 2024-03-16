@@ -1,16 +1,16 @@
-v0.02: GraphAP class
-+ Created GraphAP class 
-	> This class will hold the graph, and will contain functions to facilitate
-	semi-online matching
-	> Variables
-		- n -> Dimensions of the bipartite graph
-		- graph -> NetworkX graph to hold the nodes, edges, and edge weights
-		- sorted_edges -> array of edge weights sorted in increasing cost
+v0.03: GraphAP class + main function
++ GraphAP class additions 
 	> Functions
-		- is_matched_completely() -> Checks if every node has been matched
-		- generate_lookup_table() -> Creates a lookup based on delta
-		- get_matching_sum() -> Gets sum of a matching on this graph
+		- get_offline_matching() -> Performs Karp algorithm on the graph
+		- convert_to_oneway_matching() -> Halves the size of a bloated matching
+		- flush() -> Reset to allow the reuse of this object
+		- set_matched() -> Marks 2 nodes as matched
+		- get_closest() -> Returns closest unmatched node
+
++ main.py
+	> Functions
+		- semionline() -> prototype function for conducting the Semionline AP
 
 TODO Updates
-+ Completed the task of fixing the delta = 1 problem
-	> The error was due to Karp being attempted on an empty graph
++ Completed the task of fixing Choice randomness
+	> Removal of indices in an array needed to be done backwards

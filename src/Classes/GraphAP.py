@@ -3,6 +3,7 @@ import math
 import numpy as np
 import networkx as nx
 from networkx.algorithms import bipartite
+import random
 
 
 ## Graph for use in the Assignment Problem
@@ -89,8 +90,21 @@ class GraphAP:
 		subgraph = self.graph.copy()
 		subgraph.remove_nodes_from(cull_indices)
 
-		# Halves the items in the matching to remove duplicate weights
 		matching = bipartite.minimum_weight_full_matching(subgraph)
+		return GraphAP.convert_to_oneway_matching(matching, rhs)
+
+
+	## Returns an optimal offline matching using Karp algorithm
+	## Output: one-way matching dictionary (RHS keys)
+	def get_offline_matching(self):
+		matching = bipartite.minimum_weight_full_matching(self.graph)
+		return GraphAP.convert_to_oneway_matching(matching)
+
+
+	## Static Function: Halves the size of a two-way matching
+	## Input: bloated matching 'matching', RHS toggle 'rhs'
+	## Ouptut one-way matching
+	def convert_to_oneway_matching(matching, rhs=True):
 		count = int(len(matching.items()) / 2) 
 
 		if rhs:
@@ -115,11 +129,57 @@ class GraphAP:
 		return sum(weights)
 
 
+	## Resets the graph's attributes to allow reuse
+	def flush(self):
+		# Sets all nodes to unmatched
+		for i in range(2 * self.n):
+			self.graph.nodes[i]["matched"] = False
 
-foo = GraphAP("../../test/assign200.txt")
+	
+	## Sets the nodes of an edge to matched
+	def set_matched(self, u, v):
+		self.graph.nodes[u]["matched"] = True
+		self.graph.nodes[v]["matched"] = True
+		
+	
+	## Randomly chooses the closest unmatched node (Works for both LHS and RHS)
+	## Input: node index 'i'
+	## Output: matched node index
+	def get_closest(self, i):
+		edges = self.sorted_edges[i]
 
-for i in [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
-	lookup = foo.generate_lookup_table(i, rhs=True)
-	print(lookup)
-	foo.get_matching_sum(lookup)
-	print(foo.get_matching_sum(lookup))
+		for w in edges.keys():
+			# Scans for closest unmatched nodes
+			unmatched = edges[w].copy()
+			
+			for j in range(len(unmatched)-1, -1, -1):
+				node_index = unmatched[j]
+				if self.graph.nodes[node_index]["matched"]:
+					unmatched.remove(node_index)
+
+			# Chooses randomly from the unmatched nodes
+			if unmatched:
+				choice = random.choice(unmatched)
+				return choice
+
+		print(f"Error: match for node {i} not found!")
+		
+
+# foo = GraphAP("../../test/assign200.txt")
+
+# print("Optimal Offline")
+# optimal = foo.get_offline_matching()
+# print(optimal)
+# print(foo.get_matching_sum(optimal))
+
+# for i in [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
+# 	print("delta: ", i)
+# 	lookup = foo.generate_lookup_table(i)
+# 	print(lookup)
+# 	print(foo.get_matching_sum(lookup))
+
+# 	if optimal == lookup:
+# 		print("I'm optimal!")
+
+# foo.flush()
+
