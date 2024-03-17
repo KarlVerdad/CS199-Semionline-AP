@@ -1,5 +1,6 @@
-v0.04a: main function
-+ main.py modifications
-	> Functions
-		- semionline() -> Changed to only perform the semionline matching
-		- simulate_semionline() -> Now performs multiple semionline tests with multiple delta
+v0.04b: Progress bar
++ Added progress.py
+	> Displays the progress of a lengthy task
++ Progress bars are now displayed in the following tasks in GraphAP
+	> Creating the weights array from file
+	> Building the n * n graph

@@ -1,12 +1,12 @@
 import random
-from Classes.GraphAP import GraphAP
+from modules.GraphAP import GraphAP
 from colorama import Fore
 
 random.seed(153123)
 
 # Relative path in the eyes of GraphAP
 #TODO: Add these as constants in GraphAP OR just use absolute paths 
-TEST_FILE = "../../test/assign200.txt"	 
+TEST_FILE = "../../test/assign800.txt"	 
 # 0 => no unknowns, 1 => all unknown
 DELTA_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
 
@@ -65,13 +65,13 @@ def simulate_semionline(rel_path):
 		valid_text = f"{Fore.GREEN}(Valid){Fore.WHITE}" if is_valid \
 		 	else f"{Fore.RED}(INVALID){Fore.WHITE}"
 
-		print(f"Delta: {'%.1f' % delta} {valid_text}")
+		print(f"Delta: {delta:.1f} {valid_text}")
 		print(semionline_sum, "/", karp_sum)
 		print(empirical_competitive_ratio)
 
 	# Display summarized results
 	print("==Summary==")
-	print({d: float(f"{'%.4f' % c}") for d, c in competitive_ratio_results.items()})
+	print({d: float(f"{c:.4f}") for d, c in competitive_ratio_results.items()})
 	
 
 if __name__ == "__main__":
