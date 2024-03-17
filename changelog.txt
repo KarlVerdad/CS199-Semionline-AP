@@ -1,6 +1,5 @@
-v0.04b: Progress bar
-+ Added progress.py
-	> Displays the progress of a lengthy task
-+ Progress bars are now displayed in the following tasks in GraphAP
-	> Creating the weights array from file
-	> Building the n * n graph
+v0.04c: Progress bar optimization
++ Optimized ProgressBar.py
+	> progress.py is now its own class called ProgressBar
+	> The progress bar is only printed if the percent value has been incremented by at least 1
+	> Resulted in significant speedup to initialization

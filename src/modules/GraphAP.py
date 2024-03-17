@@ -4,7 +4,7 @@ import numpy as np
 import networkx as nx
 from networkx.algorithms import bipartite
 import random
-from . import progress
+from .ProgressBar import ProgressBar
 
 ## Graph for use in the Assignment Problem
 ## Has functions to aid in semi-online matching
@@ -26,18 +26,21 @@ class GraphAP:
 		n = int(f.readline())
 		weights = np.array([]).astype(int)
 
+		# Initialize progress bar
 		print("Processing file...")
 		with open(file_path, "rb") as f2:
 			progress_total = sum([1 for _ in f2]) - 1
 		line_count = 0
-		progress.display(0, progress_total)			
+		progress_bar = ProgressBar(progress_total) 
+		progress_bar.update_and_display(0)
 
 		for line in f:
 			weights = np.append(weights, list(map(int, line.strip().split(" "))))
 			
 			# Progress bar
 			line_count += 1
-			progress.display(line_count, progress_total)	
+			progress_bar.update_and_display(line_count)
+
 		weights = np.array(weights).reshape(n, n) 
 
 		f.close()
@@ -51,9 +54,11 @@ class GraphAP:
 		graph.add_nodes_from(list(range(n)), bipartite=0, matched=False)
 		graph.add_nodes_from(list(range(n, n * 2)), bipartite=1, matched=False)
 		
+		# Initialize progress bar
 		print("Building graph...")
 		progress_total = n * n
-		progress.display(0, progress_total)	
+		progress_bar = ProgressBar(progress_total) 
+		progress_bar.update_and_display(0)
 
 		for u in range(n):
 			for v in range(n, 2 * n):
@@ -72,7 +77,8 @@ class GraphAP:
 				sorted_edges[v][w].append(u)
 
 				# Progress bar
-				progress.display(u * n + (v - n) + 1, progress_total)
+				progress_bar.update_and_display(u * n + (v - n) + 1)
+
 
 		# Sorts the items of sorted_edges
 		for i in range(2 * n):
