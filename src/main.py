@@ -1,12 +1,12 @@
 import random
+import os
 from modules.GraphAP import GraphAP
 from colorama import Fore
 
-random.seed(153123)
+random.seed(6378912)
 
-# Relative path in the eyes of GraphAP
-#TODO: Add these as constants in GraphAP OR just use absolute paths 
-TEST_FILE = "../../test/assign800.txt"	 
+FILE_TO_TEST = "assign200.txt"
+DATA_RELATIVE_DIR = "../test"	
 # 0 => no unknowns, 1 => all unknown
 DELTA_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
 
@@ -39,9 +39,9 @@ def semionline(graphAP: GraphAP, delta):
 
 
 ## Prototype function for semionline matchihng
-## Input: relative path to input 'rel_path'
-def simulate_semionline(rel_path):
-	G = GraphAP(rel_path)
+## Input: absolute path to input 'file_path'
+def simulate_semionline(file_path):
+	G = GraphAP(file_path)
 
 	# Offline matching (Karp)
 	karp_matching = G.get_offline_matching()
@@ -57,7 +57,7 @@ def simulate_semionline(rel_path):
 		# Consolidate results
 		is_valid = G.is_matched_completely()
 		if not is_valid:
-			print("Error: Graph was not completely matched")  #TODO: Make this a warning
+			print(f"{Fore.RED}Error: Graph was not completely matched{Fore.WHITE}") 
 		empirical_competitive_ratio = semionline_sum / karp_sum
 		competitive_ratio_results[delta] = empirical_competitive_ratio
 
@@ -65,7 +65,7 @@ def simulate_semionline(rel_path):
 		valid_text = f"{Fore.GREEN}(Valid){Fore.WHITE}" if is_valid \
 		 	else f"{Fore.RED}(INVALID){Fore.WHITE}"
 
-		print(f"Delta: {delta:.1f} {valid_text}")
+		print(f"Delta: {delta:.2f} {valid_text}")
 		print(semionline_sum, "/", karp_sum)
 		print(empirical_competitive_ratio)
 
@@ -75,4 +75,10 @@ def simulate_semionline(rel_path):
 	
 
 if __name__ == "__main__":
-	result = simulate_semionline(TEST_FILE)
+	# Get absolute path of input data
+	dir = os.path.dirname(__file__)
+	rel_path = os.path.join(dir, DATA_RELATIVE_DIR, FILE_TO_TEST)
+	file_path = os.path.abspath(rel_path)	
+
+	# Perform simulations
+	result = simulate_semionline(file_path)

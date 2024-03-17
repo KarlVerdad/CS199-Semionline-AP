@@ -1,24 +1,21 @@
-import os
 import math
 import numpy as np
 import networkx as nx
-from networkx.algorithms import bipartite
 import random
+from networkx.algorithms import bipartite
 from .ProgressBar import ProgressBar
 
 ## Graph for use in the Assignment Problem
 ## Has functions to aid in semi-online matching
 class GraphAP:
-	def __init__(self, rel_path):
-		self._create_from_file(rel_path)
+	def __init__(self, file_path):
+		self._create_from_file(file_path)
 
 
 	## Initializes graph variables from a file
 	## Input: relative path 'rel_path'
-	def _create_from_file(self, rel_path):
+	def _create_from_file(self, file_path):
 		# Open the file
-		dir = os.path.dirname(__file__)
-		file_path = os.path.join(dir, rel_path)
 		f = open(file_path)
 
 		# Group the raw weights in a 2D array
@@ -28,8 +25,8 @@ class GraphAP:
 
 		# Initialize progress bar
 		print("Processing file...")
-		with open(file_path, "rb") as f2:
-			progress_total = sum([1 for _ in f2]) - 1
+		with open(file_path, "rb") as f_temp:
+			progress_total = sum([1 for _ in f_temp]) - 1
 		line_count = 0
 		progress_bar = ProgressBar(progress_total) 
 		progress_bar.update_and_display(0)
