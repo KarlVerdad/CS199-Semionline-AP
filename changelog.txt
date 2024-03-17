@@ -1,16 +1,5 @@
-v0.03: GraphAP class + main function
-+ GraphAP class additions 
+v0.04a: main function
++ main.py modifications
 	> Functions
-		- get_offline_matching() -> Performs Karp algorithm on the graph
-		- convert_to_oneway_matching() -> Halves the size of a bloated matching
-		- flush() -> Reset to allow the reuse of this object
-		- set_matched() -> Marks 2 nodes as matched
-		- get_closest() -> Returns closest unmatched node
-
-+ main.py
-	> Functions
-		- semionline() -> prototype function for conducting the Semionline AP
-
-TODO Updates
-+ Completed the task of fixing Choice randomness
-	> Removal of indices in an array needed to be done backwards
+		- semionline() -> Changed to only perform the semionline matching
+		- simulate_semionline() -> Now performs multiple semionline tests with multiple delta

@@ -164,22 +164,3 @@ class GraphAP:
 
 		print(f"Error: match for node {i} not found!")
 		
-
-# foo = GraphAP("../../test/assign200.txt")
-
-# print("Optimal Offline")
-# optimal = foo.get_offline_matching()
-# print(optimal)
-# print(foo.get_matching_sum(optimal))
-
-# for i in [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
-# 	print("delta: ", i)
-# 	lookup = foo.generate_lookup_table(i)
-# 	print(lookup)
-# 	print(foo.get_matching_sum(lookup))
-
-# 	if optimal == lookup:
-# 		print("I'm optimal!")
-
-# foo.flush()
-
