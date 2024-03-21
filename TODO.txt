@@ -4,6 +4,3 @@ Action items
 -> Plot the distribution of edge weights (Beasley)
 -> 3 * randomization, then get the average e. competitive ratio
 -> Try smaller increments of delta
-
-Code plans
--> Decide on a proper rel_path resolver for GraphAP

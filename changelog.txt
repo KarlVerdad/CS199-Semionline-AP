@@ -1,4 +1,7 @@
-v0.04d: Graph AP filepath change
-+ GraphAP modifications
-	> file_path input is now an absolute path as opposed to a relative path
-	> Allows the module to be used from anywhere
+v0.05a: Data Gathering
++ Paths of the files to test are no longer hard coded
+	> main.py processes both files and directories
++ Added parsed arguments
+	> "path" - Path to file OR directory to test
+	> [-s] - Toggle to save the results 
++ Results are appended to "preliminary_results.txt"
