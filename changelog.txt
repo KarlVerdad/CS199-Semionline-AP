@@ -1,4 +1,9 @@
-v0.05b: Randomness Fix
-+ Bug Fix: Random seed is now reset for each run of the simulation
-	> Ensures that running multiple simulations subsequently does not
-	mess with the randomness
+v0.05c: Distribution checker
++ Added a jupyter program to view the distribution of the input data
+	> Change the FILE constant to test different files
++ Seed is now reset for each change in delta
+	> Further ensures that subsequent simulations are independent of each other
+
+TODO updates
++ Distribution of the Beasley data set was checked
+	> They are confirmed to be primarily in uniform distribution (through eyeballing)

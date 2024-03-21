@@ -44,7 +44,6 @@ def semionline(graphAP: GraphAP, delta):
 ## Output: Dictionary of {delta: empirical c. ratio}
 def simulate_semionline(file_path):
 	# Preliminaries
-	random.seed(SEED)
 	file_name = os.path.basename(file_path)
 	print(f"===File: {file_name}===")
 	G = GraphAP(file_path)
@@ -57,6 +56,7 @@ def simulate_semionline(file_path):
 	competitive_ratio_results = {}
 
 	for delta in DELTA_OPTIONS:
+		random.seed(SEED)
 		semionline_matching = semionline(G, delta)
 		semionline_sum = G.get_matching_sum(semionline_matching)
 

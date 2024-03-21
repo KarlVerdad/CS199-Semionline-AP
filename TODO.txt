@@ -1,6 +1,5 @@
 Action items
--> (Highest Priority) Test the algorithm on small data (10 items) with an optimal answer
+-> (Highest Priority) 3 * randomization, then get the average e. competitive ratio
+-> Test the algorithm on small data (10 items) with an optimal answer
       -> high weights (min 1)
--> Plot the distribution of edge weights (Beasley)
--> 3 * randomization, then get the average e. competitive ratio
 -> Try smaller increments of delta
