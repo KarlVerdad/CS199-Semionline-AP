@@ -6,12 +6,10 @@ from colorama import Fore
 from datetime import datetime
 
 
-SEED = 6378912
+SEED = 637
 RESULTS_FILE = "../preliminary_results.txt"		# Relative path
 VALID_EXT = ('.txt', '.mama')		# Valid input file extensions
 DELTA_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]		# 0 => no unknowns, 1 => all unknown
-
-random.seed(SEED)
 
 
 ## Performs semi-online matching on a graph
@@ -41,10 +39,12 @@ def semionline(graphAP: GraphAP, delta):
 	return matching
 
 
-## Prototype function for semionline matchihng
+## Base function for semionline matching [SEEDED]
 ## Input: absolute path to input 'file_path'
 ## Output: Dictionary of {delta: empirical c. ratio}
 def simulate_semionline(file_path):
+	# Preliminaries
+	random.seed(SEED)
 	file_name = os.path.basename(file_path)
 	print(f"===File: {file_name}===")
 	G = GraphAP(file_path)

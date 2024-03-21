@@ -1,7 +1,4 @@
-v0.05a: Data Gathering
-+ Paths of the files to test are no longer hard coded
-	> main.py processes both files and directories
-+ Added parsed arguments
-	> "path" - Path to file OR directory to test
-	> [-s] - Toggle to save the results 
-+ Results are appended to "preliminary_results.txt"
+v0.05b: Randomness Fix
++ Bug Fix: Random seed is now reset for each run of the simulation
+	> Ensures that running multiple simulations subsequently does not
+	mess with the randomness
