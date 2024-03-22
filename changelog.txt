@@ -1,9 +1,12 @@
-v0.05c: Distribution checker
-+ Added a jupyter program to view the distribution of the input data
-	> Change the FILE constant to test different files
-+ Seed is now reset for each change in delta
-	> Further ensures that subsequent simulations are independent of each other
+v0.06: Results compiler
++ Added results_compiler.py
+	> Reads through the preliminary_results	created by main.py
+	> Takes the average of all runs and stores them in a separate file
++ Results are stored in "semionline_results.txt"
++ Modified arguments for main.py
+	> [-S] - Now toggles the save functionality
+	> [-s] - Sets the seed to use for randomization
 
 TODO updates
-+ Distribution of the Beasley data set was checked
-	> They are confirmed to be primarily in uniform distribution (through eyeballing)
++ Finished the 3 * randomization task
+	> With results_compiler.py, it's easy to get the average Empirical C. Ratio

@@ -6,7 +6,7 @@ from colorama import Fore
 from datetime import datetime
 
 
-SEED = 637
+SEED = 637534		# Fallback seed
 RESULTS_FILE = "../preliminary_results.txt"		# Relative path
 VALID_EXT = ('.txt', '.mama')		# Valid input file extensions
 DELTA_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]		# 0 => no unknowns, 1 => all unknown
@@ -42,7 +42,7 @@ def semionline(graphAP: GraphAP, delta):
 ## Base function for semionline matching [SEEDED]
 ## Input: absolute path to input 'file_path'
 ## Output: Dictionary of {delta: empirical c. ratio}
-def simulate_semionline(file_path):
+def simulate_semionline(file_path, seed):
 	# Preliminaries
 	file_name = os.path.basename(file_path)
 	print(f"===File: {file_name}===")
@@ -56,7 +56,7 @@ def simulate_semionline(file_path):
 	competitive_ratio_results = {}
 
 	for delta in DELTA_OPTIONS:
-		random.seed(SEED)
+		random.seed(seed)
 		semionline_matching = semionline(G, delta)
 		semionline_sum = G.get_matching_sum(semionline_matching)
 
@@ -95,15 +95,15 @@ def rel2abs_path(rel_dir, file_name):
 
 
 ## Appends results in the RESULTS_FILE
-def store_result(file_path, result):
+def store_result(file_path, result, seed):
 	# Stored data: File name, date, seed, n, results
 	with open(file_path, "r") as f1:
 		n = int(f1.readline())
 	file_name = os.path.basename(file_path)
 	time = datetime.now().strftime("%d %B %Y, %H:%M:%S")
-	header = f"> {file_name} | {time} | Seed={SEED} | n={n}\n"
+	header = f"> {file_name} | {time} | Seed={seed} | n={n}\n"
 
-	with open(f"{rel2abs_path('.', RESULTS_FILE)}", "a") as f2:
+	with open(rel2abs_path('.', RESULTS_FILE), "a") as f2:
 		# Stores header
 		f2.write(header)
 		
@@ -118,33 +118,37 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 
 	parser.add_argument("path", help="Directory/File to use as input")
-	parser.add_argument("-s", "--save", action='store_true',
+	parser.add_argument("-S", "--save", action='store_true',
             help="Toggle to append the result(s) in the results file")
+	parser.add_argument("-s", "--seed", type=int,
+            help="Seed to use for randomization")
 
 	args = parser.parse_args()
 
+	# Process arguments
+	seed = args.seed if args.seed else SEED
+
 	# Different behaviour based on if the path is a directory or file
 	path = os.path.abspath(args.path)
-	print(path)
 	if os.path.isfile(path):
 		# Path argument is a file
-		result = simulate_semionline(path)
+		result = simulate_semionline(path, seed)
 
 		# Stores results
 		if args.save:
-			store_result(path, result)
+			store_result(path, result, seed)
 
 	elif os.path.isdir(path):
 		# Path argument is a directory
 		for file in sorted(os.listdir(path)):
 			if file.endswith(VALID_EXT):
 				file_path = os.path.join(path, file)
-				result = simulate_semionline(file_path)
+				result = simulate_semionline(file_path, seed)
 				print("")
 
 				# Store results
 				if args.save:
-					store_result(file_path, result)
+					store_result(file_path, result, seed)
 
 	else:
 		raise Exception(f"{Fore.RED}Invalid path argument!{Fore.WHITE}")
