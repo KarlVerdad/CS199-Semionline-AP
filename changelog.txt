@@ -1,3 +1,10 @@
-v0.06x: Minor adjustments
-+ results_compiler.py
-	> Save path is now printed out
+v0.07: Seeds and files
++ Modified arguments for main.py
+	> [-s] - Now takes in multiple Seeds
++ Added arguments for main.py
+	> [-r] - Takes in the number of random simulations to run
+		   - Mutually exclusive with [-s]
++ Distinction between input file or input directory is now handled before running simulations
+
+TODO updates
++ Added the task of reducing input node bias

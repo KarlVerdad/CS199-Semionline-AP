@@ -1,4 +1,6 @@
 Action items
+-> There seems to be a bias on the data used when choosing the known nodes
+	> Try to make the known nodes random instead of the first x nodes
 -> Test the algorithm on small data (10 items) with an optimal answer
       -> high weights (min 1)
 -> Try smaller increments of delta

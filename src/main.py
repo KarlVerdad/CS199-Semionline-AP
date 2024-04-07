@@ -1,15 +1,16 @@
 import os
 import argparse
 import random
+import sys
 from modules.GraphAP import GraphAP
 from colorama import Fore
 from datetime import datetime
 
 
-SEED = 637534		# Fallback seed
+SEED = [637534]		# Fallback seed
 RESULTS_FILE = "../preliminary_results.txt"		# Relative path
-VALID_EXT = ('.txt', '.mama')		# Valid input file extensions
-DELTA_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]		# 0 => no unknowns, 1 => all unknown
+VALID_EXT = ('.txt')		# Valid input file extensions
+DELTA_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]		# 0 => no unknowns, 1 => all unknown (δ - proportion of adversarial)
 
 
 ## Performs semi-online matching on a graph
@@ -120,38 +121,45 @@ if __name__ == "__main__":
 	parser.add_argument("path", help="Directory/File to use as input")
 	parser.add_argument("-S", "--save", action='store_true',
             help="Toggle to append the result(s) in the results file")
-	parser.add_argument("-s", "--seed", type=int,
-            help="Seed to use for randomization")
+
+	seed_group = parser.add_mutually_exclusive_group()
+	seed_group.add_argument("-s", "--seeds", type=int, nargs="+",
+            help="Explicit seeds to use for randomization")
+	seed_group.add_argument("-r", "--random", type=int,
+			help="Count of non-explicit random seeds to use")
 
 	args = parser.parse_args()
 
 	# Process arguments
-	seed = args.seed if args.seed else SEED
+	seeds = []
+	if args.random:
+		for i in range(args.random):
+			seeds.append(random.randint(0, sys.maxsize))	
+	else:
+		seeds = args.seeds if args.seeds else SEED
 
-	# Different behaviour based on if the path is a directory or file
+	input_files = []
 	path = os.path.abspath(args.path)
 	if os.path.isfile(path):
 		# Path argument is a file
-		result = simulate_semionline(path, seed)
-
-		# Stores results
-		if args.save:
-			store_result(path, result, seed)
-
+		input_files.append(path)
 	elif os.path.isdir(path):
 		# Path argument is a directory
 		for file in sorted(os.listdir(path)):
 			if file.endswith(VALID_EXT):
 				file_path = os.path.join(path, file)
-				result = simulate_semionline(file_path, seed)
-				print("")
-
-				# Store results
-				if args.save:
-					store_result(file_path, result, seed)
-
+				input_files.append(file_path)
 	else:
 		raise Exception(f"{Fore.RED}Invalid path argument!{Fore.WHITE}")
+
+	# Run simulations
+	for file in input_files:
+		for seed in seeds:
+			result = simulate_semionline(file, seed)
+
+			# Stores results
+			if args.save:
+				store_result(file, result, seed)
 
 	if args.save:
 			print(f"{Fore.GREEN}Results saved in {rel2abs_path('.', RESULTS_FILE)}{Fore.WHITE}")

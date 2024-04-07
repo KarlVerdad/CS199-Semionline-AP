@@ -97,7 +97,7 @@ class GraphAP:
 		return True
 
 
-	## Creates a lookup table from the first 1 - δ proportion of RHS nodes
+	## Creates a lookup table from the first 1 - δ % of RHS nodes
 	## Input: proportion of unknown 'delta': range(0.0-1.0), RHS toggle 'rhs'
 	## Output: one-way matching dictionary with RHS nodes as keys by default
 	def generate_lookup_table(self, delta, rhs=True):
