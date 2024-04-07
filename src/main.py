@@ -1,14 +1,11 @@
 import os
 import argparse
 import random
-import sys
+import numpy as np
 from modules.GraphAP import GraphAP
 from colorama import Fore
 from datetime import datetime
 
-# For checking
-import numpy as np
-from networkx.utils.misc import graphs_equal
 
 SEED = [637534]		# Fallback seed
 RESULTS_FILE = "../preliminary_results.txt"		# Relative path
@@ -57,6 +54,7 @@ def simulate_semionline(G: GraphAP, seed):
 	competitive_ratio_results = {}
 
 	for delta in DELTA_OPTIONS:
+		np.random.seed(seed)
 		random.seed(seed)
 		G.flush()
 		semionline_matching = semionline(G, delta)
@@ -135,7 +133,7 @@ if __name__ == "__main__":
 	seeds = []
 	if args.random:
 		for i in range(args.random):
-			seeds.append(random.randint(0, sys.maxsize))	
+			seeds.append(random.randint(0, 2 ** 32 - 1))	
 	else:
 		seeds = args.seeds if args.seeds else SEED
 

@@ -2,3 +2,7 @@ Action items
 -> Test the algorithm on small data (10 items) with an optimal answer
       -> high weights (min 1)
 -> Try smaller increments of delta
+
+
+>>> REDO THE RESULTS
+	-> The current results currently use the implementation with the faulty seed

@@ -108,7 +108,7 @@ class GraphAP:
 			# Returns an empty lookup table if all nodes are unknown
 			return {}
 
-		# cull_indices = list(range(2 * self.n - cull_count, 2 * self.n))
+		# cull_indices = list(range(2 * self.n - cull_count, 2 * self.n))	<-- Alternative: Culls the last x nodes 
 		cull_indices = np.random.choice(range(self.n, 2 * self.n), cull_count, replace=False)
 
 		subgraph = self.graph.copy()
