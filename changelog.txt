@@ -1,10 +1,14 @@
-v0.07: Seeds and files
-+ Modified arguments for main.py
-	> [-s] - Now takes in multiple Seeds
-+ Added arguments for main.py
-	> [-r] - Takes in the number of random simulations to run
-		   - Mutually exclusive with [-s]
-+ Distinction between input file or input directory is now handled before running simulations
+v0.07b: Handling bias
++ Modified GraphAP.py
+	> Nodes in the lookup table are now chosen randomly instead of the first x nodes
++ GraphAP is now shared across seeds (in addition to being shared across delta)
+	> Small speedup especially for large n
++ Added results folder for keeping track of relevant results
+
+Results folder
++ n30_d0.1_100-800
+	> simulation count = 30, delta interval = 0.1, n from 100 to 800
+	> run time: ~1 hour
 
 TODO updates
-+ Added the task of reducing input node bias
++ Finished the task of handling bias

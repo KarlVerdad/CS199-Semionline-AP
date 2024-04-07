@@ -103,11 +103,13 @@ class GraphAP:
 	def generate_lookup_table(self, delta, rhs=True):
 		# Creates a reduced subgraph
 		cull_count = math.floor(delta * self.n)
+
 		if cull_count == self.n:
 			# Returns an empty lookup table if all nodes are unknown
 			return {}
 
-		cull_indices = list(range(2 * self.n - cull_count, 2 * self.n))
+		# cull_indices = list(range(2 * self.n - cull_count, 2 * self.n))
+		cull_indices = np.random.choice(range(self.n, 2 * self.n), cull_count, replace=False)
 
 		subgraph = self.graph.copy()
 		subgraph.remove_nodes_from(cull_indices)

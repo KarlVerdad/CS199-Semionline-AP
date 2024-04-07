@@ -6,11 +6,15 @@ from modules.GraphAP import GraphAP
 from colorama import Fore
 from datetime import datetime
 
+# For checking
+import numpy as np
+from networkx.utils.misc import graphs_equal
 
 SEED = [637534]		# Fallback seed
 RESULTS_FILE = "../preliminary_results.txt"		# Relative path
 VALID_EXT = ('.txt')		# Valid input file extensions
 DELTA_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]		# 0 => no unknowns, 1 => all unknown (δ - proportion of adversarial)
+# DELTA_OPTIONS = [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1]
 
 
 ## Performs semi-online matching on a graph
@@ -18,7 +22,6 @@ DELTA_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]		# 0 => no u
 ## Output: one-way matching dictionary
 def semionline(graphAP: GraphAP, delta):
 	matching = {}
-	graphAP.flush()
 	lookup = graphAP.generate_lookup_table(delta)
 
 	# Pre-emptively marks all the nodes in lookup to reserve them
@@ -43,11 +46,8 @@ def semionline(graphAP: GraphAP, delta):
 ## Base function for semionline matching [SEEDED]
 ## Input: absolute path to input 'file_path'
 ## Output: Dictionary of {delta: empirical c. ratio}
-def simulate_semionline(file_path, seed):
-	# Preliminaries
-	file_name = os.path.basename(file_path)
-	print(f"===File: {file_name}===")
-	G = GraphAP(file_path)
+def simulate_semionline(G: GraphAP, seed):
+	print(f"=== n: {G.n}, seed: {seed} ===")
 
 	# Offline matching (Karp)
 	karp_matching = G.get_offline_matching()
@@ -58,6 +58,7 @@ def simulate_semionline(file_path, seed):
 
 	for delta in DELTA_OPTIONS:
 		random.seed(seed)
+		G.flush()
 		semionline_matching = semionline(G, delta)
 		semionline_sum = G.get_matching_sum(semionline_matching)
 
@@ -77,13 +78,13 @@ def simulate_semionline(file_path, seed):
 		print(empirical_competitive_ratio)
 
 	# Display summarized results
-	print(f"===Summary: {file_name}===")
+	print(f"===Summary===")
 	summarized_results = {d: round(c, 3) for d, c in competitive_ratio_results.items()}
 	print("Delta\tEmpirical C. Ratio")
 	for d, c in summarized_results.items():
 		print(f"{d}\t{c}")
 
-	return competitive_ratio_results
+	return (competitive_ratio_results, G)
 	
 
 ## Converts a relative (to this file) path to an absolute path
@@ -154,12 +155,17 @@ if __name__ == "__main__":
 
 	# Run simulations
 	for file in input_files:
+		# Create GraphAP
+		print(f"=== File: {os.path.basename(file)} ===")
+		G = GraphAP(file)
+		
 		for seed in seeds:
-			result = simulate_semionline(file, seed)
+			result = simulate_semionline(G, seed)
+			print("")
 
 			# Stores results
 			if args.save:
-				store_result(file, result, seed)
+				store_result(file, result[0], seed)
 
 	if args.save:
 			print(f"{Fore.GREEN}Results saved in {rel2abs_path('.', RESULTS_FILE)}{Fore.WHITE}")
