@@ -139,6 +139,9 @@ if __name__ == "__main__":
 	results = combine_results(prelims)
 
 	# Store results in file
-	open(rel2abs_path('.', RESULTS_FILE), "w").close()
+	out_path = rel2abs_path('.', RESULTS_FILE) 
+	open(out_path, "w").close()
 	for r in results:
 		store_result(r)
+
+	print(f"{Fore.GREEN}Results saved in {out_path}{Fore.WHITE}")

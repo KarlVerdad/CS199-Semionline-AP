@@ -1,4 +1,4 @@
-from os import EX_IOERR
+# from os import EX_IOERR
 import random
 import numpy as np
 import math

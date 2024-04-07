@@ -1,6 +1,6 @@
 # 10. Run the algorithm on the set of all test data. 
 import numpy as np
-import graph_operations as go
+import oapmla.graph_operations as go
 
 
 # GETS ALL PERMUTATIONS OF THE INPUT SEQUENCE

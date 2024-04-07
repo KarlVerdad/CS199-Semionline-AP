@@ -1,12 +1,3 @@
-v0.06: Results compiler
-+ Added results_compiler.py
-	> Reads through the preliminary_results	created by main.py
-	> Takes the average of all runs and stores them in a separate file
-+ Results are stored in "semionline_results.txt"
-+ Modified arguments for main.py
-	> [-S] - Now toggles the save functionality
-	> [-s] - Sets the seed to use for randomization
-
-TODO updates
-+ Finished the 3 * randomization task
-	> With results_compiler.py, it's easy to get the average Empirical C. Ratio
+v0.06x: Minor adjustments
++ results_compiler.py
+	> Save path is now printed out

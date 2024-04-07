@@ -154,5 +154,5 @@ if __name__ == "__main__":
 		raise Exception(f"{Fore.RED}Invalid path argument!{Fore.WHITE}")
 
 	if args.save:
-			print(f"Results saved in {rel2abs_path('.', RESULTS_FILE)}")
+			print(f"{Fore.GREEN}Results saved in {rel2abs_path('.', RESULTS_FILE)}{Fore.WHITE}")
 	

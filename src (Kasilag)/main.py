@@ -2,9 +2,9 @@ import networkx as nx
 import numpy as np
 from networkx.algorithms import bipartite
 import matplotlib.pyplot as plt
-import graph_operations as go
+import oapmla.graph_operations as go
 import run, math
-import data_generate as dg
+import oapmla.data_generate as dg
 
 
 def sample_assign100(fName):
@@ -32,10 +32,10 @@ def create_pred_matrixA(shape, error_li=[0.1, 0.2, 0.3, 0.4, 0.5]):
 
 def plot_brunel_error():
     file_name_list = [
-        "../test/assign100.txt", "../test/assign200.txt",
-        "../test/assign300.txt", "../test/assign400.txt",
-        "../test/assign500.txt", "../test/assign600.txt",
-        "../test/assign700.txt", "../test/assign800.txt"
+        "../../test/assign100.txt", "../../test/assign200.txt",
+        "../../test/assign300.txt", "../../test/assign400.txt",
+        "../../test/assign500.txt", "../../test/assign600.txt",
+        "../../test/assign700.txt", "../../test/assign800.txt"
     ]
     k = 50
     ave0, rmsd = go.iterate_for_different_error(file_name_list, 0, k)
@@ -116,10 +116,10 @@ def plot_rmsd():
     epsilon_list = [0, 0.1, 0.2, 0.3, 0.4, 0.5]
     k_list = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
     file_name_list = [
-        "../test/assign100.txt", "../test/assign200.txt",
-        "../test/assign300.txt", "../test/assign400.txt",
-        "../test/assign500.txt", "../test/assign600.txt",
-        "../test/assign700.txt", "../test/assign800.txt"
+        "../../test/assign100.txt", "../../test/assign200.txt",
+        "../../test/assign300.txt", "../../test/assign400.txt",
+        "../../test/assign500.txt", "../../test/assign600.txt",
+        "../../test/assign700.txt", "../../test/assign800.txt"
     ]
     sol_list, rmsd_list = go.iterate_get_rmsd(file_name_list, epsilon_list,
                                               k_list)

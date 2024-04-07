@@ -2,7 +2,7 @@ import networkx as nx
 import numpy as np
 from networkx.algorithms import bipartite
 import matplotlib.pyplot as plt
-import data_generate as dg
+from . import data_generate as dg
 
 
 # Generates a networkx graph from a text file
