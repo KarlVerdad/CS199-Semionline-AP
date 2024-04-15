@@ -1,7 +1,7 @@
-v0.09a: Cleaned up Kasilag Implementation
-+ onlineML now displays the results of runs with varying epsilon and k
-+ Removed vestigial graph return in semionline.py
-+ Renamed preliminary_results.txt to semionline_preliminaries.txt
-
-TODO updates
-+ Added steps to improve the usability of onlineML.py
+v0.09b: Consolidation preparations
++ Modified semionline.py to prepare for combination with onlineML
+	> competitive_ratio_results changed from a dict to an array
+	> store_result() now stores entries regardless of the result format
+	> changed semionline_preliminaries.txt back to preliminary_results.txt
++ Excplicit and random seeds now work with onlineML
+	> onlineML still works as a standalone program

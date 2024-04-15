@@ -1,43 +1,39 @@
 import os
 import argparse
+import random
 import numpy as np
-import networkx as nx
 from colorama import Fore
+from datetime import datetime
 from modules.GraphML import GraphML
 
 
+SEED = [637534]		# Fallback seed
 VALID_EXT = ('.txt')		# Valid input file extensions
+
 EPSILON_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5]
 K_OPTIONS = [10, 30, 50]
 
 
-def simulate_onlineML(G: GraphML, seed=238974):
+def simulate_onlineML(G: GraphML, seed):
 	print(f"=== n: {G.n}, seed: {seed} ===")
-
-	# Offline matching (Karp)
-	karp_matching = GraphML.get_optimal_matching(G.graph)
-	karp_sum = G.get_projected_matching_sum(karp_matching)
-
-	print(f"Karp: {karp_sum}")
-
-	# Online matching with simulated ML
 	competitive_ratio_results = []
+
 	for e in EPSILON_OPTIONS:
 		for k in K_OPTIONS:
-			# np.random.seed(seed)
+			np.random.seed(seed)
 
 			predicted_graph = G.generate_perturbed_graph(e, k)
 			predicted_matching = GraphML.get_optimal_matching(predicted_graph)
 			predicted_sum = G.get_projected_matching_sum(predicted_matching)
 
 			# Consolidate Results
-			empirical_competitive_ratio = predicted_sum / karp_sum
+			empirical_competitive_ratio = predicted_sum / G.karp_sum
 			data = (e, k, empirical_competitive_ratio)
 			competitive_ratio_results.append(data)
 
 			# Display results
 			print(f"ε: {e:.2f} | k: {k}")
-			print(predicted_sum, "/", karp_sum)
+			print(predicted_sum, "/", G.karp_sum)
 			print(empirical_competitive_ratio)
 
 	# Display summarized results
@@ -55,10 +51,25 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 
 	parser.add_argument("path", help="Directory/File to use as input")
+	parser.add_argument("-S", "--save", action='store_true',
+            help="Toggle to append the result(s) in the results file")
+
+	seed_group = parser.add_mutually_exclusive_group()
+	seed_group.add_argument("-s", "--seeds", type=int, nargs="+",
+            help="Explicit seeds to use for randomization")
+	seed_group.add_argument("-r", "--random", type=int,
+			help="Count of non-explicit random seeds to use")
 
 	args = parser.parse_args()
 
 	# Process arguments
+	seeds = []
+	if args.random:
+		for i in range(args.random):
+			seeds.append(random.randint(0, 2 ** 32 - 1))	
+	else:
+		seeds = args.seeds if args.seeds else SEED
+
 	input_files = []
 	path = os.path.abspath(args.path)
 	if os.path.isfile(path):
@@ -73,13 +84,14 @@ if __name__ == "__main__":
 	else:
 		raise Exception(f"{Fore.RED}Invalid path argument!{Fore.WHITE}")
 
-
 	# Run simulations
 	for file in input_files:
 		print(f"=== File: {os.path.basename(file)} ===")
 		G = GraphML(file)
 
-		result = simulate_onlineML(G)
+		for seed in seeds:
+			result = simulate_onlineML(G, seed)
+			print("")
 
 
 

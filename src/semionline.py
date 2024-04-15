@@ -2,17 +2,19 @@ import os
 import argparse
 import random
 import numpy as np
-from modules.GraphAP import GraphAP
 from colorama import Fore
 from datetime import datetime
+from modules.GraphAP import GraphAP
 
 
 SEED = [637534]		# Fallback seed
-RESULTS_FILE = "../semionline_preliminaries.txt"		# Relative path
+RESULTS_FILE = "../preliminary_results.txt"		# Relative path
 VALID_EXT = ('.txt')		# Valid input file extensions
+
 DELTA_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]		# 0 => no unknowns, 1 => all unknown (δ - proportion of adversarial)
 # DELTA_OPTIONS = [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1]
 
+#region Semionline
 
 ## Performs semi-online matching on a graph
 ## Input: GraphAP class 'graphAP', proportion of unknown 'delta'
@@ -45,13 +47,7 @@ def semionline(graphAP: GraphAP, delta):
 ## Output: Dictionary of {delta: empirical c. ratio}
 def simulate_semionline(G: GraphAP, seed):
 	print(f"=== n: {G.n}, seed: {seed} ===")
-
-	# Offline matching (Karp)
-	karp_matching = GraphAP.get_optimal_matching(G.graph)
-	karp_sum = G.get_projected_matching_sum(karp_matching)
-
-	# Semi-online matching
-	competitive_ratio_results = {}
+	competitive_ratio_results = []
 
 	for delta in DELTA_OPTIONS:
 		np.random.seed(seed)
@@ -63,26 +59,31 @@ def simulate_semionline(G: GraphAP, seed):
 		is_valid = G.is_matched_completely()
 		if not is_valid:
 			print(f"{Fore.RED}Error: Graph was not completely matched{Fore.WHITE}") 
-		empirical_competitive_ratio = semionline_sum / karp_sum
-		competitive_ratio_results[delta] = empirical_competitive_ratio
+		empirical_competitive_ratio = semionline_sum / G.karp_sum
+		data = (delta, empirical_competitive_ratio)
+		competitive_ratio_results.append(data)
 
 		# Display results
 		valid_text = f"{Fore.GREEN}(Valid){Fore.WHITE}" if is_valid \
 		 	else f"{Fore.RED}(INVALID){Fore.WHITE}"
 
 		print(f"Delta: {delta:.2f} {valid_text}")
-		print(semionline_sum, "/", karp_sum)
+		print(semionline_sum, "/", G.karp_sum)
 		print(empirical_competitive_ratio)
 
 	# Display summarized results
 	print(f"===Summary===")
-	summarized_results = {d: round(c, 3) for d, c in competitive_ratio_results.items()}
+	# summarized_results = {d: round(c, 3) for d, c in competitive_ratio_results.items()}
+	summarized_results = [(d, round(c, 3)) for d, c in competitive_ratio_results]
 	print("Delta\tEmpirical C. Ratio")
-	for d, c in summarized_results.items():
+	for d, c in summarized_results:
 		print(f"{d}\t{c}")
 
 	return competitive_ratio_results
 	
+#endregion
+
+#region Results Storing
 
 ## Converts a relative (to this file) path to an absolute path
 ## Input: directory containing file 'rel_dir', raw 'file_name'
@@ -94,6 +95,7 @@ def rel2abs_path(rel_dir, file_name):
 
 
 ## Appends results in the RESULTS_FILE
+## Result must be a tuple of alphanumeric strings
 def store_result(file_path, result, seed):
 	# Stored data: File name, date, seed, n, results
 	with open(file_path, "r") as f1:
@@ -107,16 +109,20 @@ def store_result(file_path, result, seed):
 		f2.write(header)
 		
 		# Stores results line by line
-		for d, c in result.items():
-			entry = f"{d}\t\t{c}\n"
-			f2.write(entry)
+		for i in range(len(result)):
+			entry = "\t\t".join(str(data) for data in result[i])
+			f2.write(f"{entry}\n")
 
+#endregion
 
 if __name__ == "__main__":
 	# Parameters
 	parser = argparse.ArgumentParser()
 
-	parser.add_argument("path", help="Directory/File to use as input")
+	parser.add_argument("algorithm", choices=["onlineML", "semionline", "semionlineML"],
+			help="Type of Assignment Problem to simulate")
+	parser.add_argument("path", 
+			help="Directory/File to use as input")
 	parser.add_argument("-S", "--save", action='store_true',
             help="Toggle to append the result(s) in the results file")
 
@@ -157,7 +163,12 @@ if __name__ == "__main__":
 		G = GraphAP(file)
 		
 		for seed in seeds:
-			result = simulate_semionline(G, seed)
+			if args.algorithm == "onlineML":
+				raise Exception("Not yet implemented!")
+			elif args.algorithm == "semionline":
+				result = simulate_semionline(G, seed)
+			elif args.algorithm == "semionlineML":
+				raise Exception("Not yet implemented!")
 			print("")
 
 			# Stores results

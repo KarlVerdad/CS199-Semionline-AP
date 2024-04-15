@@ -10,6 +10,10 @@ class GraphAP:
 	def __init__(self, file_path):
 		self._create_from_file(file_path)
 
+		# Store optimal sum (using Karp's Algorithm)
+		karp_matching = GraphAP.get_optimal_matching(self.graph)
+		self.karp_sum = self.get_projected_matching_sum(karp_matching)
+
 
 	## Initializes graph variables from a file
 	## Input: relative path 'rel_path'
