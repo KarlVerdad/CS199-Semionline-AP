@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 SEED = [637534]		# Fallback seed
-RESULTS_FILE = "../preliminary_results.txt"		# Relative path
+RESULTS_FILE = "../semionline_preliminaries.txt"		# Relative path
 VALID_EXT = ('.txt')		# Valid input file extensions
 DELTA_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]		# 0 => no unknowns, 1 => all unknown (δ - proportion of adversarial)
 # DELTA_OPTIONS = [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1]
@@ -81,7 +81,7 @@ def simulate_semionline(G: GraphAP, seed):
 	for d, c in summarized_results.items():
 		print(f"{d}\t{c}")
 
-	return (competitive_ratio_results, G)
+	return competitive_ratio_results
 	
 
 ## Converts a relative (to this file) path to an absolute path
@@ -162,7 +162,7 @@ if __name__ == "__main__":
 
 			# Stores results
 			if args.save:
-				store_result(file, result[0], seed)
+				store_result(file, result, seed)
 
 	if args.save:
 			print(f"{Fore.GREEN}Results saved in {rel2abs_path('.', RESULTS_FILE)}{Fore.WHITE}")

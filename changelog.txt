@@ -1,11 +1,7 @@
-v0.08b: Kasilag implementation (Online AP with simulated ML)
-+ GraphML (Kasilag version), inherits GraphAP
-	> Variables
-		- max -> maximum edge weight in graph
-		- min -> minimum edge weight in graph
-	> Functions
-		- generate_perturbed_graph() -> return a perturbed graph modified by e and k
-		- edge2nodes() -> converts an edge index to it's (u, v) nodes
-		- calculate_rmsd() -> gets RMSD compared to another graph
-+ Modified GraphAP functions
-	> get_offline_matching() renamed to get_optimal_matching()
+v0.09a: Cleaned up Kasilag Implementation
++ onlineML now displays the results of runs with varying epsilon and k
++ Removed vestigial graph return in semionline.py
++ Renamed preliminary_results.txt to semionline_preliminaries.txt
+
+TODO updates
++ Added steps to improve the usability of onlineML.py
