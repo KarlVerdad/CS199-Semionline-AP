@@ -1,12 +1,11 @@
-v0.07c: Seed fix
-+ Fixed setting of seeds
-	> numpy needs to be reseeded along with random
-+ Seed range is now from (0 to 2^32) to accomodate numpy restrictions
-
-Results folder
-+ n30_d0.1_100-800
-	> simulation count = 30, delta interval = 0.01, n from 100 to 800
-	> run time: ~1 hour
-
-TODO updates
-+ Redo the simulations
+v0.08a: Kasilag implementation (Online AP with simulated ML)
++ Added GraphML which inherits from GraphAP
+	> Currently contains for getting a perturbed matrix of its stored graph
++ Modified GraphAP functions
+	> get_offline_matching() turned into a static function
+	> get_matching_sum() renamed to get_projected_matching_sum()
++ Renamed base files to make room for the simulated ML variant	
+	> Renamed main.py to semionline.py
+	> Renamed results_compiler.py to semionline_compiler.py
++ The numpy.random module is now used for most rng operations
+	> The only use of Python's random module is for generating the seeds for numpy.random

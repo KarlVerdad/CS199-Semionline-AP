@@ -1,7 +1,6 @@
 import math
 import numpy as np
 import networkx as nx
-import random
 from networkx.algorithms import bipartite
 from .ProgressBar import ProgressBar
 
@@ -114,15 +113,14 @@ class GraphAP:
 		subgraph = self.graph.copy()
 		subgraph.remove_nodes_from(cull_indices)
 
-		matching = bipartite.minimum_weight_full_matching(subgraph)
-		return GraphAP.convert_to_oneway_matching(matching, rhs)
+		return GraphAP.get_offline_matching(subgraph, rhs)
 
 
 	## Returns an optimal offline matching using Karp algorithm
 	## Output: one-way matching dictionary (RHS keys)
-	def get_offline_matching(self):
-		matching = bipartite.minimum_weight_full_matching(self.graph)
-		return GraphAP.convert_to_oneway_matching(matching)
+	def get_offline_matching(graph, rhs=True):
+		matching = bipartite.minimum_weight_full_matching(graph)
+		return GraphAP.convert_to_oneway_matching(matching, rhs)
 
 
 	## Static Function: Halves the size of a two-way matching
@@ -142,7 +140,7 @@ class GraphAP:
 	## Returns the sum of a matching (works for incomplete matches)
 	## Input: 'matching': dict, bloated toggle 'bloated'
 	## Note: a matching is bloated if it contains matches from both directions
-	def get_matching_sum(self, matching, bloated=False):
+	def get_projected_matching_sum(self, matching, bloated=False):
 		if bloated:
 			count = int(len(matching.items()) / 2) 
 			true_matching = list(matching.items())[:count]
@@ -183,7 +181,7 @@ class GraphAP:
 
 			# Chooses randomly from the unmatched nodes
 			if unmatched:
-				choice = random.choice(unmatched)
+				choice = np.random.choice(unmatched)
 				return choice
 
 		print(f"Error: match for node {i} not found!")

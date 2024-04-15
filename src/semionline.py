@@ -47,18 +47,17 @@ def simulate_semionline(G: GraphAP, seed):
 	print(f"=== n: {G.n}, seed: {seed} ===")
 
 	# Offline matching (Karp)
-	karp_matching = G.get_offline_matching()
-	karp_sum = G.get_matching_sum(karp_matching)
+	karp_matching = GraphAP.get_offline_matching(G.graph)
+	karp_sum = G.get_projected_matching_sum(karp_matching)
 
 	# Semi-online matching
 	competitive_ratio_results = {}
 
 	for delta in DELTA_OPTIONS:
 		np.random.seed(seed)
-		random.seed(seed)
 		G.flush()
 		semionline_matching = semionline(G, delta)
-		semionline_sum = G.get_matching_sum(semionline_matching)
+		semionline_sum = G.get_projected_matching_sum(semionline_matching)
 
 		# Consolidate results
 		is_valid = G.is_matched_completely()
