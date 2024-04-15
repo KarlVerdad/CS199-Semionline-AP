@@ -1,14 +1,4 @@
 Action items
--> OnlineML
-	> Argument parsing
-	> Seed handling
-	> Storing results
-
--> Combine onlineML.py with semionline.py
-	> There are too many similarities to the process of both scripts to not consider this
-	> results compiler also need to be updated to handle different algorithms
-		--> Potentially, just treat the last entry in the data as the one to average
-
 -> Test the algorithm on small data (10 items) with an optimal answer
       -> high weights (min 1)
 -> Try smaller increments of delta

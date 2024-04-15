@@ -1,7 +1,12 @@
-v0.09b: Consolidation preparations
-+ Modified semionline.py to prepare for combination with onlineML
-	> competitive_ratio_results changed from a dict to an array
-	> store_result() now stores entries regardless of the result format
-	> changed semionline_preliminaries.txt back to preliminary_results.txt
-+ Excplicit and random seeds now work with onlineML
-	> onlineML still works as a standalone program
+v0.10: Consolidation
++ onlineML.py and semionline.py was combined back into main.py
++ Modified semionline_compiler.py
+	+ Renamed semionline_compiler.py back to results_compiler.py
+	+ results_compiler.py now works for the results of any algorithm, as long as the
+	  competitive ratio is in the last column of the data
+	+ As a result of this change, the error checking of incompatible data types has been removed
++ Renamed semionline_results.txt to compiled_results.txt
+
+TODO updates
++ Finished the task of combining onlineML and semionline
+	> In doing so, the task of finishing onlineML has also been completed

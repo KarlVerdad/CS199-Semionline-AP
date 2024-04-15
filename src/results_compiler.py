@@ -1,8 +1,11 @@
 import os
 from colorama import Fore
 
+## NOTE: Make sure not to try to compile data with incompatible algorithms or data sets
+
+
 PRELIMS_FILE = "../preliminary_results.txt"		# Relative path
-RESULTS_FILE = "../semionline_results.txt"		# Relative path
+RESULTS_FILE = "../compiled_results.txt"		# Relative path
 
 
 ## Storage container for results
@@ -20,7 +23,7 @@ class Result:
 		self.n = int(header_list[3].split("=")[1])
 		
 		# Initialize results list
-		self.data = {}
+		self.data = []
 
 
 	def __str__(self):
@@ -30,26 +33,21 @@ class Result:
 
 
 	## Inserts data to data dictionary
-	def insert_data(self, key, value):
-		self.data[key] = value
+	def insert_data(self, data_list):
+		self.data.append([float(d) for d in data_list])
 
-
-	## Adds to the stored data and gets their average based on the current self.seeds count
-	def combine_data(self, key, new_value):
-		count = len(self.seeds)
-		total = self.data[key] * count
-		self.data[key] = (total + new_value) / (count + 1)
 		
+	def combine_data(self, index, new_value):
+		count = len(self.seeds)
+		total = self.data[index][-1] * count
+		self.data[index][-1] = (total + new_value) / (count + 1)
+
 
 	## Combines the data of another Results class by averaging them
 	def combine(self, new_result):
-		# Makes sure that the data being combined is compatible
-		if self.data.keys() != new_result.data.keys():
-			raise Exception(f"{Fore.RED}Incompatible results for {self.file}!{Fore.WHITE}")
-
-		# Updates current data
-		for d, c in new_result.data.items():
-			self.combine_data(d, c)
+		for i in range(len(new_result.data)):
+			new_value = new_result.data[i][-1]
+			self.combine_data(i, new_value)
 		self.seeds.append(new_result.seeds[0])
 
 
@@ -75,7 +73,7 @@ def read_results(file_path):
 			else:
 				# Data detected
 				data = line.split("\t\t")
-				R.insert_data(float(data[0]), float(data[1]))
+				R.insert_data(data)
 		else:
 			# Save current chunk
 			results.append(R)
@@ -118,10 +116,10 @@ def store_result(result: Result):
 		# Stores header
 		f.write(header)
 		
-		# Stores data line by line
-		for d, c in result.data.items():
-			entry = f"{d}\t\t{c}\n"
-			f.write(entry)
+		# Stores results line by line
+		for i in range(len(result.data)):
+			entry = "\t\t".join(str(d) for d in result.data[i])
+			f.write(f"{entry}\n")
 
 
 ## Converts a relative (to this file) path to an absolute path

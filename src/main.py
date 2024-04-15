@@ -5,14 +5,54 @@ import numpy as np
 from colorama import Fore
 from datetime import datetime
 from modules.GraphAP import GraphAP
+from modules.GraphML import GraphML
 
 
 SEED = [637534]		# Fallback seed
 RESULTS_FILE = "../preliminary_results.txt"		# Relative path
 VALID_EXT = ('.txt')		# Valid input file extensions
 
+EPSILON_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5]
+K_OPTIONS = [10, 30, 50]
 DELTA_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]		# 0 => no unknowns, 1 => all unknown (δ - proportion of adversarial)
 # DELTA_OPTIONS = [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1]
+
+
+#region OnlineML
+
+def simulate_onlineML(G: GraphML, seed):
+	print(f"=== n: {G.n}, seed: {seed} ===")
+	competitive_ratio_results = []
+
+	for e in EPSILON_OPTIONS:
+		for k in K_OPTIONS:
+			np.random.seed(seed)
+
+			predicted_graph = G.generate_perturbed_graph(e, k)
+			predicted_matching = GraphML.get_optimal_matching(predicted_graph)
+			predicted_sum = G.get_projected_matching_sum(predicted_matching)
+			rmsd = G.calculate_rmsd(predicted_graph)
+
+			# Consolidate Results
+			empirical_competitive_ratio = predicted_sum / G.karp_sum
+			data = (e, k, rmsd, empirical_competitive_ratio)
+			competitive_ratio_results.append(data)
+
+			# Display results
+			print(f"ε: {e:.2f} | k: {k} | rmsd: {rmsd:.2f}")
+			print(predicted_sum, "/", G.karp_sum)
+			print(empirical_competitive_ratio)
+
+	# Display summarized results
+	print(f"===Summary===")
+	summarized_results = [(round(e, 2), k, round(r, 2), round(c, 3)) for e, k, r, c in competitive_ratio_results]
+	print("ε\tk\trmsd\tEmpirical C. Ratio")
+	for e, k, r, c in summarized_results:
+		print(f"{e}\t{k}\t{r}\t{c}")
+
+	return competitive_ratio_results
+
+#endregion
 
 #region Semionline
 
@@ -160,20 +200,28 @@ if __name__ == "__main__":
 	for file in input_files:
 		# Create GraphAP
 		print(f"=== File: {os.path.basename(file)} ===")
-		G = GraphAP(file)
-		
-		for seed in seeds:
-			if args.algorithm == "onlineML":
-				raise Exception("Not yet implemented!")
-			elif args.algorithm == "semionline":
-				result = simulate_semionline(G, seed)
-			elif args.algorithm == "semionlineML":
-				raise Exception("Not yet implemented!")
-			print("")
 
-			# Stores results
-			if args.save:
-				store_result(file, result, seed)
+		if args.algorithm == "semionline":
+			G = GraphAP(file)
+			for seed in seeds:
+				result = simulate_semionline(G, seed)
+				print("")
+
+				# Stores results
+				if args.save:
+					store_result(file, result, seed)
+		else:
+			G = GraphML(file)
+			for seed in seeds:
+				if args.algorithm == "onlineML":
+					result = simulate_onlineML(G, seed)
+				elif args.algorithm == "semionlineML":
+					raise Exception("Not yet implemented!")
+				print("")
+
+				# Stores results
+				if args.save:
+					store_result(file, result, seed)
 
 	if args.save:
 			print(f"{Fore.GREEN}Results saved in {rel2abs_path('.', RESULTS_FILE)}{Fore.WHITE}")
