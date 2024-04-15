@@ -1,11 +1,11 @@
-v0.08a: Kasilag implementation (Online AP with simulated ML)
-+ Added GraphML which inherits from GraphAP
-	> Currently contains for getting a perturbed matrix of its stored graph
+v0.08b: Kasilag implementation (Online AP with simulated ML)
++ GraphML (Kasilag version), inherits GraphAP
+	> Variables
+		- max -> maximum edge weight in graph
+		- min -> minimum edge weight in graph
+	> Functions
+		- generate_perturbed_graph() -> return a perturbed graph modified by e and k
+		- edge2nodes() -> converts an edge index to it's (u, v) nodes
+		- calculate_rmsd() -> gets RMSD compared to another graph
 + Modified GraphAP functions
-	> get_offline_matching() turned into a static function
-	> get_matching_sum() renamed to get_projected_matching_sum()
-+ Renamed base files to make room for the simulated ML variant	
-	> Renamed main.py to semionline.py
-	> Renamed results_compiler.py to semionline_compiler.py
-+ The numpy.random module is now used for most rng operations
-	> The only use of Python's random module is for generating the seeds for numpy.random
+	> get_offline_matching() renamed to get_optimal_matching()

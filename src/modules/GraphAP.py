@@ -113,17 +113,17 @@ class GraphAP:
 		subgraph = self.graph.copy()
 		subgraph.remove_nodes_from(cull_indices)
 
-		return GraphAP.get_offline_matching(subgraph, rhs)
+		return GraphAP.get_optimal_matching(subgraph, rhs)
 
 
-	## Returns an optimal offline matching using Karp algorithm
+	## STATIC FUNCTION: Returns an optimal offline matching using Karp algorithm
 	## Output: one-way matching dictionary (RHS keys)
-	def get_offline_matching(graph, rhs=True):
+	def get_optimal_matching(graph, rhs=True):
 		matching = bipartite.minimum_weight_full_matching(graph)
 		return GraphAP.convert_to_oneway_matching(matching, rhs)
 
 
-	## Static Function: Halves the size of a two-way matching
+	## STATIC FUNCTION: Halves the size of a two-way matching
 	## Input: bloated matching 'matching', RHS toggle 'rhs'
 	## Ouptut one-way matching
 	def convert_to_oneway_matching(matching, rhs=True):

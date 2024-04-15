@@ -1,6 +1,7 @@
 import os
 import argparse
 import numpy as np
+import networkx as nx
 from colorama import Fore
 from modules.GraphML import GraphML
 
@@ -35,6 +36,12 @@ if __name__ == "__main__":
 	# Testing
 	for file in input_files:
 		G = GraphML(file)
-		predicted_graph = G.generate_perturbed_graph(0.5, 10)
+		predicted_graph = G.generate_perturbed_graph(0.1, 10)
+		predicted_matching = GraphML.get_optimal_matching(predicted_graph)
+		sum = G.get_projected_matching_sum(predicted_matching)
+
+		print(f"RMSD: {G.calculate_rmsd(predicted_graph)}")
+		print(f"ALG: {sum}")
+
 
 

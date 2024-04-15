@@ -51,7 +51,9 @@ class GraphML(GraphAP):
 		return subgraph
 
 
-	## Converts an edge index (range(self.n^2)) to it's corresponding u, v nodes
+	## Converts an edge index to it's corresponding u, v nodes
+	## Input: edge_index: range(self.n^2)
+	## Output: node indices (u, v)
 	def edge2nodes(self, edge_index):
 		if edge_index < 0 or edge_index >= self.n * self.n:
 			raise Exception(f"{Fore.RED}Edge index out of bounds!{Fore.WHITE}")
@@ -59,3 +61,15 @@ class GraphML(GraphAP):
 		u = edge_index // self.n
 		v = (edge_index % self.n) + self.n		# Note: v is offset by self.n
 		return u, v
+
+	## Gets the root mean squared deviation of a graph compared to self.graph
+	## Input: deviated graph
+	## Output: RMSD
+	def calculate_rmsd(self, deviated_graph: nx.Graph):
+		summation = 0
+		for u in range(self.n):
+			for v in range(self.n, 2 * self.n):
+				deviation = self.graph.edges[u, v]["weight"] - deviated_graph.edges[u, v]["weight"]
+				summation += deviation ** 2
+
+		return math.sqrt(summation / self.n ** 2)

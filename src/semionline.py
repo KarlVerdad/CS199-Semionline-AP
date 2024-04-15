@@ -47,7 +47,7 @@ def simulate_semionline(G: GraphAP, seed):
 	print(f"=== n: {G.n}, seed: {seed} ===")
 
 	# Offline matching (Karp)
-	karp_matching = GraphAP.get_offline_matching(G.graph)
+	karp_matching = GraphAP.get_optimal_matching(G.graph)
 	karp_sum = G.get_projected_matching_sum(karp_matching)
 
 	# Semi-online matching
