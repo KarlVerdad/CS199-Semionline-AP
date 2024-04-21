@@ -18,7 +18,7 @@ DELTA_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]		# 0 => no u
 # DELTA_OPTIONS = [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1]
 
 
-#region OnlineML
+#region =====OnlineML=====
 
 def simulate_onlineML(G: GraphML, seed):
 	print(f"=== n: {G.n}, seed: {seed} ===")
@@ -28,7 +28,7 @@ def simulate_onlineML(G: GraphML, seed):
 		for k in K_OPTIONS:
 			np.random.seed(seed)
 
-			predicted_graph = G.generate_perturbed_graph(e, k)
+			predicted_graph = G.generate_perturbed_graph(0, e, k)
 			predicted_matching = GraphML.get_optimal_matching(predicted_graph)
 			predicted_sum = G.get_projected_matching_sum(predicted_matching)
 			rmsd = G.calculate_rmsd(predicted_graph)
@@ -54,7 +54,7 @@ def simulate_onlineML(G: GraphML, seed):
 
 #endregion
 
-#region Semionline
+#region =====Semionline=====
 
 ## Performs semi-online matching on a graph
 ## Input: GraphAP class 'graphAP', proportion of unknown 'delta'
@@ -121,6 +121,43 @@ def simulate_semionline(G: GraphAP, seed):
 
 	return competitive_ratio_results
 	
+#endregion
+
+#region =====SemionlineML=====
+
+def simulate_semionlineML(G: GraphML, seed):
+	print(f"=== n: {G.n}, seed: {seed} ===")
+	competitive_ratio_results = []
+
+	for d in DELTA_OPTIONS:
+		for e in EPSILON_OPTIONS:
+			for k in K_OPTIONS:
+				np.random.seed(seed)
+
+				predicted_graph = G.generate_perturbed_graph(d, e, k)
+				predicted_matching = GraphML.get_optimal_matching(predicted_graph)
+				predicted_sum = G.get_projected_matching_sum(predicted_matching)
+				rmsd = G.calculate_rmsd(predicted_graph)
+
+				# Consolidate Results
+				empirical_competitive_ratio = predicted_sum / G.karp_sum
+				data = (d, e, k, rmsd, empirical_competitive_ratio)
+				competitive_ratio_results.append(data)
+
+				# Display results
+				print(f"δ: {d:.2f} | ε: {e:.2f} | k: {k} | rmsd: {rmsd:.2f}")
+				print(predicted_sum, "/", G.karp_sum)
+				print(empirical_competitive_ratio)
+
+	# Display summarized results
+	print(f"===Summary===")
+	summarized_results = [(round(d, 2), round(e, 2), k, round(r, 2), round(c, 3)) for d, e, k, r, c in competitive_ratio_results]
+	print("δ\tε\tk\trmsd\tEmpirical C. Ratio")
+	for d, e, k, r, c in summarized_results:
+		print(f"{d}\t{e}\t{k}\t{r}\t{c}")
+
+	return competitive_ratio_results
+
 #endregion
 
 #region Results Storing
@@ -216,7 +253,7 @@ if __name__ == "__main__":
 				if args.algorithm == "onlineML":
 					result = simulate_onlineML(G, seed)
 				elif args.algorithm == "semionlineML":
-					raise Exception("Not yet implemented!")
+					result = simulate_semionlineML(G, seed)
 				print("")
 
 				# Stores results

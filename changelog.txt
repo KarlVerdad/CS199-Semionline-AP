@@ -1,12 +1,3 @@
-v0.10: Consolidation
-+ onlineML.py and semionline.py was combined back into main.py
-+ Modified semionline_compiler.py
-	+ Renamed semionline_compiler.py back to results_compiler.py
-	+ results_compiler.py now works for the results of any algorithm, as long as the
-	  competitive ratio is in the last column of the data
-	+ As a result of this change, the error checking of incompatible data types has been removed
-+ Renamed semionline_results.txt to compiled_results.txt
-
-TODO updates
-+ Finished the task of combining onlineML and semionline
-	> In doing so, the task of finishing onlineML has also been completed
+v0.11: Semionline ML
++ Added semionlineML option to main.py
+	+ GraphML's generate_perturbed_graph() was extended to handle delta values
