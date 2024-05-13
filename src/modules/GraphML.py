@@ -25,20 +25,23 @@ class GraphML(GraphAP):
 		self.min = min
 
 
-	## Uses the perturbation method (Kasilag et al, 2022) to get a predicted matching
+	## Uses a modified perturbation method (Kasilag et al, 2022) to get a predicted matching
 	## Input: proportion of unknown 'delta': range(0.0-1.0), proportion of perturbed 'epsilon': range(0.0-1.0), perturb amount 'k'
 	## Output: copy of self.graph with modified edge weights
 	def generate_perturbed_graph(self, delta, epsilon, k):
 		# Get elements to perturb
-		perturb_candidates = list(range(self.n * self.n))
-		cull_count = math.floor(delta * self.n)
-		cull_indices = np.random.choice(range(self.n, 2 * self.n), cull_count, replace=False)
+		RHS_count = math.floor((1 - delta) * self.n)
+		RHS_candidates = np.random.choice(range(self.n, 2 * self.n), RHS_count, replace=False)
+
+		# Generate perturbation candidates
+		perturb_candidates = []
 		for u in range(self.n):
-			for v in cull_indices:
-				index = u * self.n + (v - self.n)
-				perturb_candidates.remove(index)
+			for v in RHS_candidates:
+				edge_index = u * self.n + (v - self.n)
+				perturb_candidates.append(edge_index)
 		
-		perturb_count = math.floor(epsilon * len(perturb_candidates)) ####### <--- FIX THIS TOO
+		# Get elements to perturb
+		perturb_count = math.floor(epsilon * len(perturb_candidates))
 		perturb_indices = np.random.choice(perturb_candidates, perturb_count, replace=False)
 		
 		# Perturbation

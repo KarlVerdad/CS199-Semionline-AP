@@ -14,7 +14,8 @@ VALID_EXT = ('.txt')		# Valid input file extensions
 
 EPSILON_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5]
 K_OPTIONS = [10, 30, 50]
-DELTA_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]		# 0 => no unknowns, 1 => all unknown (δ - proportion of adversarial)
+DELTA_OPTIONS = [0, 0.25, 0.5, 0.75, 1]
+# DELTA_OPTIONS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]		# 0 => no unknowns, 1 => all unknown (δ - proportion of adversarial)
 # DELTA_OPTIONS = [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1]
 
 
@@ -135,6 +136,7 @@ def simulate_semionlineML(G: GraphML, seed):
 				np.random.seed(seed)
 
 				predicted_graph = G.generate_perturbed_graph(d, e, k)
+				
 				predicted_matching = GraphML.get_optimal_matching(predicted_graph)
 				predicted_sum = G.get_projected_matching_sum(predicted_matching)
 				rmsd = G.calculate_rmsd(predicted_graph)

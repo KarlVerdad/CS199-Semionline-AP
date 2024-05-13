@@ -1,3 +1,3 @@
-v0.11: Semionline ML
-+ Added semionlineML option to main.py
-	+ GraphML's generate_perturbed_graph() was extended to handle delta values
+v0.11b: Optimizations
++ Sped up GraphML's generate_perturbed_graph() function
+	> Replaced the remove() calls with append() calls resulting in ~80% speed increase
