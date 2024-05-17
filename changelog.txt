@@ -1,3 +1,5 @@
-v0.11b: Optimizations
-+ Sped up GraphML's generate_perturbed_graph() function
-	> Replaced the remove() calls with append() calls resulting in ~80% speed increase
+v0.12: Data gathering
++ Ran semionline algorithm on 30 different seeds
+	> Raw and compiled results saved in results/semionline
++ Ran semionlineML algorithm on 30 different seeds
+	> Raw and compiled results saved in results/semionline
