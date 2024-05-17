@@ -1,5 +1,2 @@
-v0.12: Data gathering
-+ Ran semionline algorithm on 30 different seeds
-	> Raw and compiled results saved in results/semionline
-+ Ran semionlineML algorithm on 30 different seeds
-	> Raw and compiled results saved in results/semionline
+v0.12a: RMSD Checker
++ Added a small program to verify that RMSDs are equal throughout different values of n
