@@ -30,7 +30,7 @@ class GraphML(GraphAP):
 	## Output: copy of self.graph with modified edge weights
 	def generate_perturbed_graph(self, delta, epsilon, k):
 		# Get elements to perturb
-		RHS_count = math.floor((1 - delta) * self.n)
+		RHS_count = math.floor(delta * self.n)													## WRONG -> delta IS the unknown part to perturb
 		RHS_candidates = np.random.choice(range(self.n, 2 * self.n), RHS_count, replace=False)
 
 		# Generate perturbation candidates

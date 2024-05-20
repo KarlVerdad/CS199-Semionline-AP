@@ -1,2 +1,3 @@
-v0.12a: RMSD Checker
-+ Added a small program to verify that RMSDs are equal throughout different values of n
+v0.12b: Bug Fix
++ Changed the effect of delta on onlineML and semionlineML
+	> It used to be opposite
