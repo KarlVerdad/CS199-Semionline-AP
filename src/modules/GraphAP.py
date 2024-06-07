@@ -24,7 +24,7 @@ class GraphAP:
 		# Group the raw weights in a 2D array
 		# weights[u][v] -> weight of edge between u(LHS) and v(RHS)
 		n = int(f.readline())
-		weights = np.array([]).astype(int)
+		weights = np.array([]).astype(float)
 
 		# Initialize progress bar
 		print("Processing file...")
@@ -35,7 +35,7 @@ class GraphAP:
 		progress_bar.update_and_display(0)
 
 		for line in f:
-			weights = np.append(weights, list(map(int, line.strip().split(" "))))
+			weights = np.append(weights, list(map(float, line.strip().split(" "))))
 			
 			# Progress bar
 			line_count += 1

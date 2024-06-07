@@ -1,3 +1,5 @@
-v0.12b: Bug Fix
-+ Changed the effect of delta on onlineML and semionlineML
-	> It used to be opposite
+v0.13: Metric Space
++ GraphAP now saves edge weights as float
++ Added metric_space_generator.py
+	> Creates a bipartite graph input that follows the restrictions of a metric space
++ Added metric space datasets for n=100 to n=800
