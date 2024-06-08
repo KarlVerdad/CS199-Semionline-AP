@@ -1,5 +1,7 @@
-v0.13: Metric Space
-+ GraphAP now saves edge weights as float
-+ Added metric_space_generator.py
-	> Creates a bipartite graph input that follows the restrictions of a metric space
-+ Added metric space datasets for n=100 to n=800
+v0.13b: Metric Space Revision
++ Revised the algorithm for generating a metric space dataset
+	> Uses the sqrt(radius) method to get a uniformly distributed set of points in a circle
++ Created plot_distribution.py
+	> Plots the distribution of input data
++ Generated a new set of metric space datasets from n=100 to n=800
+	> They are all normally distributed

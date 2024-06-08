@@ -1,39 +1,27 @@
-## Generates the edges of a bipartite graph in a Euclidean metric space
-## Metric space is a square with edges that have a length of METRIC_SPACE_LIMIT
 import os
 import math
-import random
 import argparse
+import numpy as np
+import matplotlib.pyplot as plt
+
+MAX_RADIUS = 50
 
 
-METRIC_SPACE_LIMIT = 100
+## Generates a list of uniformly distributed set of points inside a circle
+def generate_points(max_radius, count):
+	angle = np.random.uniform(0, 2 * np.pi, count)
+	radius = (np.random.uniform(size=count) ** 0.5) * max_radius
 
-class Point:
-	def __init__(self):
-		self.x, self.y = Point.generate_coordinates()
+	x = radius * np.cos(angle)
+	y = radius * np.sin(angle)
 
-	def __str__(self):
-		return f"({self.x}, {self.y})"
+	return (x, y)
 
-	def __repr__(self):
-		return self.__str__()
-	
-	def __eq__(self, other):
-		return self.x == other.x and self.y == other.y
 
-	def set_coordinates(self, x, y):
-		self.x = x
-		self.y = y
-
-	## STATIC FUNCTION
-	def generate_coordinates():
-		x = random.randint(0, METRIC_SPACE_LIMIT)
-		y = random.randint(0, METRIC_SPACE_LIMIT)
-		return (x, y)
-
-	def distance_to(self, point):
-		x_dist = abs(point.x - self.x)
-		y_dist = abs(point.y - self.y)
+## Get distance between 2 (x, y)-points
+def get_distance(pointA, pointB):
+		x_dist = abs(pointA[0] - pointB[0])
+		y_dist = abs(pointA[1] - pointB[1])
 
 		return math.sqrt(math.pow(x_dist, 2) + math.pow(y_dist, 2))
 
@@ -54,37 +42,27 @@ if __name__ == "__main__":
 			help="Relative path to store edges")
 
 	args = parser.parse_args()
-
-	# Generate points
-	points = []
-
-	for i in range(2 * args.n):
-		p = Point()
-
-		# Prevents duplicate points
-		while True:
-			for q in points:
-				if p == q:
-					x, y = Point.generate_coordinates()
-					# print(f"{p} --> {(x, y)}")
-					p.set_coordinates(x, y)
-					continue
-			break
 	
-		points.append(p)
+	# Generates 2 sets of points
+	pointsU = generate_points(MAX_RADIUS, args.n)
+	pointsV = generate_points(MAX_RADIUS, args.n)
 
-	# Calculates distances and saves them to file
-	pointsU = points[:args.n]
-	pointsV = points[args.n:]
+	# Visualize data
+	plt.scatter(pointsU[0], pointsU[1], s=5, c="r")
+	plt.scatter(pointsV[0], pointsV[1], s=5, c="b")
+	plt.show()
 
+	# Calculate distances and save to file
 	with open(rel2abs_path(".", args.path), "w") as f:
 		f.write(f"{args.n}\n")
 
-		for u in pointsU:
+		for i in range(len(pointsU[0])):
+			u = (pointsU[0][i], pointsU[1][i])
 			weights = []
 
-			for v in pointsV:
-				w = u.distance_to(v)
+			for j in range(len(pointsV[0])):
+				v = (pointsV[0][j], pointsV[1][j])
+				w = get_distance(u, v)
 				weights.append(round(w, 2))
 			
 			# Saves weights to file
