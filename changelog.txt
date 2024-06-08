@@ -1,7 +1,2 @@
-v0.13b: Metric Space Revision
-+ Revised the algorithm for generating a metric space dataset
-	> Uses the sqrt(radius) method to get a uniformly distributed set of points in a circle
-+ Created plot_distribution.py
-	> Plots the distribution of input data
-+ Generated a new set of metric space datasets from n=100 to n=800
-	> They are all normally distributed
+v0.13c: Metric Space data
++ Performed Semionline and SemionlineML simulation on the new metric space dataset
