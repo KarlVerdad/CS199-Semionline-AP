@@ -1,13 +1,14 @@
-import os
+###
+# Plots the distribution of datasets
+# Additionally shows the quantitative descriptions of the dataset (i.e. mean, variance)
+###
+
 import argparse
+import statistics as st
 import numpy as np
 import matplotlib.pyplot as plt
+from colorama import Fore
 
-
-def rel2abs_path(rel_dir, file_name):
-	dir = os.path.dirname(__file__)
-	rel_path = os.path.join(dir, rel_dir, file_name)
-	return os.path.abspath(rel_path)
 
 
 if __name__ == "__main__":
@@ -20,12 +21,17 @@ if __name__ == "__main__":
 	args = parser.parse_args()
 
 	arr = []
-	with open(rel2abs_path(".", args.path), "r") as f:
+	with open(args.path, "r") as f:
 		f.readline()
 
 		for line in f:
 			arr = np.append(arr, list(map(float, line.strip().split(" "))))
 	
 	arr = [int(x) for x in arr]
+	print(f"Mean: {Fore.GREEN}{np.mean(arr)}{Fore.WHITE}")
+	print(f"Median: {Fore.GREEN}{np.median(arr)}{Fore.WHITE}")
+	print(f"Mode: {Fore.GREEN}{st.mode(arr)}{Fore.WHITE}")
+	print(f"Variance: {Fore.GREEN}{np.var(arr)}{Fore.WHITE}")
+
 	plt.hist(arr)
 	plt.show()

@@ -1,7 +1,10 @@
+###
+# Averages results with the same n in prelimenary_results.txt to compiled_results.txt
+# NOTE: Make sure not to try to compile data with incompatible algorithms or data sets
+###
+
 import os
 from colorama import Fore
-
-## NOTE: Make sure not to try to compile data with incompatible algorithms or data sets
 
 
 PRELIMS_FILE = "../preliminary_results.txt"		# Relative path

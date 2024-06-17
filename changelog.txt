@@ -1,2 +1,4 @@
-v0.13c: Metric Space data
-+ Performed Semionline and SemionlineML simulation on the new metric space dataset
+v0.14: Preparation for submission
++ Removed extranous (legacy) files
++ plot_distribution.py now shows statistical data
++ Added pictures of the statistical distribution of datasets

@@ -1,8 +1,12 @@
-import os
+###
+# Generates a dataset in R2 Euclidean space
+###
+
 import math
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
+from colorama import Fore
 
 MAX_RADIUS = 50
 
@@ -26,12 +30,6 @@ def get_distance(pointA, pointB):
 		return math.sqrt(math.pow(x_dist, 2) + math.pow(y_dist, 2))
 
 
-def rel2abs_path(rel_dir, file_name):
-	dir = os.path.dirname(__file__)
-	rel_path = os.path.join(dir, rel_dir, file_name)
-	return os.path.abspath(rel_path)
-
-
 if __name__ == "__main__":
 	# Parameters
 	parser = argparse.ArgumentParser()
@@ -39,7 +37,7 @@ if __name__ == "__main__":
 	parser.add_argument("n", type=int,
 			help="Number of nodes in a partition")
 	parser.add_argument("path",
-			help="Relative path to store edges")
+			help="Path to store edges")
 
 	args = parser.parse_args()
 	
@@ -53,7 +51,7 @@ if __name__ == "__main__":
 	plt.show()
 
 	# Calculate distances and save to file
-	with open(rel2abs_path(".", args.path), "w") as f:
+	with open(args.path, "w") as f:
 		f.write(f"{args.n}\n")
 
 		for i in range(len(pointsU[0])):
@@ -68,3 +66,6 @@ if __name__ == "__main__":
 			# Saves weights to file
 			line = " ".join(map(str, weights))
 			f.write(f"{line}\n")
+
+	print(f"{Fore.GREEN}Results saved in {args.path}{Fore.WHITE}")
+
